@@ -14,4 +14,5 @@ We are building this project incrementally.
 - **0.1**: Scaffolded the `relay-core` library crate.
 - **0.2**: Defined the Rust data models (`serde`) for the `.rl` TOML file format.
 - **0.3**: Implemented the `.rl` file parser with strong error handling.
-- **0.4**: (In Progress) Variable interpolation (string substitution).
+- **0.4**: Implemented variable interpolation for `{{var}}` syntax in strings.
+- **0.5**: (In Progress) Variable scope resolution engine (merging global, collection, environment, and request variables by precedence).
