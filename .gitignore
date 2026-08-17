@@ -3,3 +3,9 @@
 api-client-mvp-spec.md
 PROGRESS.md
 skills-lock.json
+
+# Rust & Cargo ignores
+**/target/
+**/*.rs.bk
+*.secrets.toml
+Cargo.lock

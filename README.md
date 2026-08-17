@@ -19,4 +19,7 @@ We are building this project incrementally.
 - **0.6**: Implemented secrets file loading and integration.
 - **0.7**: Implemented HTTP executor with `reqwest`.
 - **0.8**: Implemented unit tests for parsing, resolution, and mock HTTP.
-- **0.9**: (In Progress) Manual test against live API.
+- **0.9**: Implemented manual test against live API, finishing Phase 0.
+
+### Phase 1: CLI
+- **1.1**: (In Progress) Scaffold relay-cli, clap setup.
