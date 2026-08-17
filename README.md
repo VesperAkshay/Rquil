@@ -18,4 +18,5 @@ We are building this project incrementally.
 - **0.5**: Implemented the variable scope resolution engine.
 - **0.6**: Implemented secrets file loading and integration.
 - **0.7**: Implemented HTTP executor with `reqwest`.
-- **0.8**: (In Progress) Unit tests (parsing, resolution, mock HTTP).
+- **0.8**: Implemented unit tests for parsing, resolution, and mock HTTP.
+- **0.9**: (In Progress) Manual test against live API.
