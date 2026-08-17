@@ -30,6 +30,8 @@ enum Commands {
     },
 }
 
+mod discovery;
+
 fn main() {
     let cli = Cli::parse();
     
@@ -40,6 +42,12 @@ fn main() {
             println!("  Env: {:?}", env);
             println!("  JUnit flag: {}", junit);
             println!("  JSON flag: {}", json);
+
+            let files = discovery::find_rl_files(path);
+            println!("  Discovered {} .rl files:", files.len());
+            for f in files {
+                println!("    - {}", f.display());
+            }
         }
     }
 }

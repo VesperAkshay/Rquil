@@ -22,4 +22,5 @@ We are building this project incrementally.
 - **0.9**: Implemented manual test against live API, finishing Phase 0.
 
 ### Phase 1: CLI
-- **1.1**: (In Progress) Scaffold relay-cli, clap setup.
+- **1.1**: Scaffolded the `relay-cli` crate and configured `clap`.
+- **1.2**: (In Progress) Folder walking for `.rl` files.
