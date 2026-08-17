@@ -38,6 +38,12 @@ pub fn parse_file<P: AsRef<Path>>(path: P) -> Result<RelayFile, ParseError> {
     Ok(parsed)
 }
 
+pub fn load_secrets<P: AsRef<Path>>(path: P) -> Result<std::collections::HashMap<String, String>, ParseError> {
+    let content = fs::read_to_string(path)?;
+    let parsed: std::collections::HashMap<String, String> = toml::from_str(&content)?;
+    Ok(parsed)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -81,5 +87,20 @@ name = "Test
     fn test_parse_missing_file() {
         let result = parse_file("definitely_does_not_exist_xyz.rl");
         assert!(matches!(result, Err(ParseError::Io(_))));
+    }
+
+    #[test]
+    fn test_load_secrets_valid() {
+        let path = std::env::temp_dir().join("test_secrets.toml");
+        let mut file = File::create(&path).unwrap();
+        writeln!(file, r#"
+api_key = "super_secret"
+token = "abc123xyz"
+"#).unwrap();
+
+        let secrets = load_secrets(&path).unwrap();
+        assert_eq!(secrets.get("api_key").unwrap(), "super_secret");
+        assert_eq!(secrets.get("token").unwrap(), "abc123xyz");
+        let _ = std::fs::remove_file(path);
     }
 }

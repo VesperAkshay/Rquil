@@ -44,16 +44,18 @@ pub fn interpolate(input: &str, vars: &HashMap<String, String>) -> String {
     result
 }
 
-/// Resolves variables across all four scopes into a single lookup table.
+/// Resolves variables across five scopes into a single lookup table.
 /// Precedence order (highest to lowest, meaning higher overwrites lower):
 /// 1. Request
-/// 2. Environment
-/// 3. Collection
-/// 4. Global
+/// 2. Secrets
+/// 3. Environment
+/// 4. Collection
+/// 5. Global
 pub fn resolve_scopes(
     global: &HashMap<String, String>,
     collection: &HashMap<String, String>,
     env: &HashMap<String, String>,
+    secrets: &HashMap<String, String>,
     request: &HashMap<String, String>,
 ) -> HashMap<String, String> {
     let mut resolved = HashMap::new();
@@ -66,6 +68,9 @@ pub fn resolve_scopes(
         resolved.insert(k.clone(), v.clone());
     }
     for (k, v) in env {
+        resolved.insert(k.clone(), v.clone());
+    }
+    for (k, v) in secrets {
         resolved.insert(k.clone(), v.clone());
     }
     for (k, v) in request {
@@ -140,11 +145,15 @@ mod tests {
         env.insert("var_c".to_string(), "env_c".to_string());
         env.insert("var_d".to_string(), "env_d".to_string());
 
+        let mut secrets = HashMap::new();
+        secrets.insert("var_d".to_string(), "secrets_d".to_string());
+        secrets.insert("var_s".to_string(), "secrets_s".to_string());
+
         let mut request = HashMap::new();
         request.insert("var_d".to_string(), "request_d".to_string());
         request.insert("var_e".to_string(), "request_e".to_string());
 
-        let resolved = resolve_scopes(&global, &collection, &env, &request);
+        let resolved = resolve_scopes(&global, &collection, &env, &secrets, &request);
 
         // global_a is untouched
         assert_eq!(resolved.get("var_a").unwrap(), "global_a");
@@ -152,7 +161,9 @@ mod tests {
         assert_eq!(resolved.get("var_b").unwrap(), "collection_b");
         // env_c overrides collection_c
         assert_eq!(resolved.get("var_c").unwrap(), "env_c");
-        // request_d overrides env_d
+        // secrets_s is uniquely secrets
+        assert_eq!(resolved.get("var_s").unwrap(), "secrets_s");
+        // request_d overrides secrets_d (which overrode env_d)
         assert_eq!(resolved.get("var_d").unwrap(), "request_d");
         // request_e is uniquely request
         assert_eq!(resolved.get("var_e").unwrap(), "request_e");

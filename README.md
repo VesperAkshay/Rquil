@@ -15,4 +15,5 @@ We are building this project incrementally.
 - **0.2**: Defined the Rust data models (`serde`) for the `.rl` TOML file format.
 - **0.3**: Implemented the `.rl` file parser with strong error handling.
 - **0.4**: Implemented variable interpolation for `{{var}}` syntax in strings.
-- **0.5**: (In Progress) Variable scope resolution engine (merging global, collection, environment, and request variables by precedence).
+- **0.5**: Implemented the variable scope resolution engine.
+- **0.6**: (In Progress) Secrets file loading.
