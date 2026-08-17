@@ -16,4 +16,6 @@ We are building this project incrementally.
 - **0.3**: Implemented the `.rl` file parser with strong error handling.
 - **0.4**: Implemented variable interpolation for `{{var}}` syntax in strings.
 - **0.5**: Implemented the variable scope resolution engine.
-- **0.6**: (In Progress) Secrets file loading.
+- **0.6**: Implemented secrets file loading and integration.
+- **0.7**: Implemented HTTP executor with `reqwest`.
+- **0.8**: (In Progress) Unit tests (parsing, resolution, mock HTTP).
