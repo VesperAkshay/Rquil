@@ -44,6 +44,12 @@ pub fn load_secrets<P: AsRef<Path>>(path: P) -> Result<std::collections::HashMap
     Ok(parsed)
 }
 
+pub fn load_collection_config<P: AsRef<Path>>(path: P) -> Result<crate::model::CollectionConfig, ParseError> {
+    let content = fs::read_to_string(path)?;
+    let parsed: crate::model::CollectionConfig = toml::from_str(&content)?;
+    Ok(parsed)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

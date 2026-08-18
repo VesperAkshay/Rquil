@@ -34,4 +34,12 @@ We are building this project incrementally.
 - **2.1**: Scaffolded the Tauri app (`relay-gui`) with React + Vite + TS, linked `relay-core`.
 - **2.2**: Built Tauri command to list a collection's requests.
 - **2.3**: Built the frontend collection tree view (Sidebar).
-- **2.4**: (In Progress) Frontend: request editor form.
+- **2.4**: Built the frontend request editor form.
+- **2.5**: Built `send_request` Tauri command wrapping the Rust executor.
+- **2.6**: Wired send button + response viewer.
+- **2.7**: Successfully executed end-to-end manual GUI test.
+
+### Phase 3: Environments, Auth, Scripting
+- **3.1**: Built environment switcher to parse `relay.toml` and toggle between envs.
+- **3.2**: GUI: mask/reveal secrets file.
+- **3.3**: (In Progress) OAuth2 Client Credentials flow in `relay-core`.

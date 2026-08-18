@@ -42,10 +42,16 @@ pub struct RequestBody {
     pub content: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq)]
 pub struct RequestAuth {
     #[serde(rename = "type")]
     pub auth_type: String,
+    #[serde(default)]
+    pub token_url: Option<String>,
+    #[serde(default)]
+    pub client_id: Option<String>,
+    #[serde(default)]
+    pub client_secret: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Default, PartialEq)]
@@ -57,6 +63,18 @@ pub struct Script {
 #[derive(Debug, Deserialize, Serialize, PartialEq)]
 pub struct PostResponseScript {
     pub assert: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Default, PartialEq)]
+pub struct CollectionConfig {
+    #[serde(default)]
+    pub environments: HashMap<String, Environment>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Default, PartialEq)]
+pub struct Environment {
+    #[serde(default)]
+    pub variables: HashMap<String, String>,
 }
 
 #[cfg(test)]

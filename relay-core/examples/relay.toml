@@ -1,0 +1,14 @@
+[environments.dev.variables]
+base_url = "http://localhost:8080"
+greeting = "hello-dev"
+auth_token = "dev_abc123"
+
+[environments.staging.variables]
+base_url = "https://staging.httpbin.org"
+greeting = "hello-staging"
+auth_token = "stg_xyz789"
+
+[environments.prod.variables]
+base_url = "https://httpbin.org"
+greeting = "hello-prod"
+auth_token = "prod_omg999"
