@@ -75,3 +75,34 @@ pub async fn get_token(client: &Client, auth: &RequestAuth) -> Result<String, Au
 
     Ok(access_token)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, ResponseTemplate};
+
+    #[tokio::test]
+    async fn test_get_token_success() {
+        let server = MockServer::start().await;
+        
+        Mock::given(method("POST"))
+            .and(path("/token"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(serde_json::json!({
+                "access_token": "mocked_token_123"
+            })))
+            .mount(&server)
+            .await;
+            
+        let client = Client::new();
+        let auth = RequestAuth {
+            auth_type: "oauth2_client_credentials".to_string(),
+            token_url: Some(format!("{}/token", server.uri())),
+            client_id: Some("test_client_id".to_string()),
+            client_secret: Some("test_client_secret".to_string()),
+        };
+        
+        let token = get_token(&client, &auth).await.unwrap();
+        assert_eq!(token, "mocked_token_123");
+    }
+}

@@ -15,6 +15,7 @@ pub struct Response {
 pub enum HttpError {
     Reqwest(reqwest::Error),
     InvalidMethod(String),
+    Auth(crate::auth::AuthError),
 }
 
 impl std::fmt::Display for HttpError {
@@ -22,6 +23,7 @@ impl std::fmt::Display for HttpError {
         match self {
             HttpError::Reqwest(e) => write!(f, "Request error: {}", e),
             HttpError::InvalidMethod(m) => write!(f, "Invalid HTTP method: {}", m),
+            HttpError::Auth(e) => write!(f, "Auth error: {}", e),
         }
     }
 }
@@ -48,6 +50,13 @@ pub async fn execute(client: &Client, req: &Request) -> Result<Response, HttpErr
         }
     }
     builder = builder.headers(header_map);
+
+    if let Some(auth) = &req.auth {
+        if auth.auth_type == "oauth2_client_credentials" {
+            let token = crate::auth::get_token(client, auth).await.map_err(HttpError::Auth)?;
+            builder = builder.bearer_auth(token);
+        }
+    }
 
     if let Some(body) = &req.body {
         builder = builder.body(body.content.clone());
