@@ -3,6 +3,8 @@
 api-client-mvp-spec.md
 PROGRESS.md
 skills-lock.json
+CLI_USAGE.md
+
 
 # Rust & Cargo ignores
 **/target/
