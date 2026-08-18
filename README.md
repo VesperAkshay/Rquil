@@ -29,3 +29,9 @@ We are building this project incrementally.
 - **1.5**: Implemented JSON output (`--json`).
 - **1.6**: Process exit codes based on test success/failure.
 - **1.7**: Final manual verification of all output formats and failure conditions.
+
+### Phase 2: Minimal GUI (Tauri)
+- **2.1**: Scaffolded the Tauri app (`relay-gui`) with React + Vite + TS, linked `relay-core`.
+- **2.2**: Built Tauri command to list a collection's requests.
+- **2.3**: Built the frontend collection tree view (Sidebar).
+- **2.4**: (In Progress) Frontend: request editor form.

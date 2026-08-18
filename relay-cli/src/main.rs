@@ -9,9 +9,8 @@ use relay_core::{
     parser::parse_file,
     vars::{resolve_scopes, interpolate},
     http::execute,
+    discovery,
 };
-
-mod discovery;
 
 #[derive(Parser, Debug)]
 #[command(name = "relay")]

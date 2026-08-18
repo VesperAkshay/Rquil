@@ -1,49 +1,52 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
+import { TreeView } from "./components/TreeView";
+import { RequestEditor } from "./components/RequestEditor";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [requests, setRequests] = useState<string[]>([]);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  async function fetchRequests() {
+    try {
+      // Testing with the relative path to our examples
+      const result: string[] = await invoke("list_requests", { path: "../../relay-core/examples" });
+      setRequests(result);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+    <main style={{ display: 'flex', height: '100vh', width: '100vw', margin: 0, overflow: 'hidden' }}>
+      {/* Sidebar */}
+      <aside style={{ width: '300px', borderRight: '1px solid #333', display: 'flex', flexDirection: 'column', background: '#1a1a1a' }}>
+        <div style={{ padding: '15px', borderBottom: '1px solid #333', textAlign: 'center' }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#fff' }}>Relay Collections</h3>
+          <button onClick={fetchRequests} style={{ width: '100%', padding: '8px' }}>Load Examples</button>
+        </div>
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          {requests.length > 0 ? (
+            <TreeView paths={requests} onSelect={setSelectedFile} />
+          ) : (
+            <p style={{ padding: '15px', color: '#666', textAlign: 'center', fontSize: '0.9rem' }}>
+              No collection loaded.
+            </p>
+          )}
+        </div>
+      </aside>
+      
+      {/* Main Content Area */}
+      <section style={{ flex: 1, padding: '30px', display: 'flex', flexDirection: 'column', background: '#242424', color: '#e0e0e0', overflowY: 'auto' }}>
+        {selectedFile ? (
+          <RequestEditor filePath={selectedFile} />
+        ) : (
+          <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
+            <p>Select a file from the sidebar to start editing</p>
+          </div>
+        )}
+      </section>
     </main>
   );
 }
